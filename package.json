@@ -1,13 +1,17 @@
+
 {
   "name": "rms",
   "version": "0.1.0",
   "private": true,
+
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "prisma generate"
   },
+
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.3.0",
     "@prisma/client": "^7.3.0",
@@ -21,6 +25,7 @@
     "react-bootstrap": "^2.10.10",
     "react-dom": "19.2.3"
   },
+
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
@@ -34,3 +39,4 @@
     "typescript": "^5"
   }
 }
+
