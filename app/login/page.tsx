@@ -1,9 +1,8 @@
-
 "use client";
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import Link from 'next/link';
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -81,6 +80,11 @@ export default function LoginPage() {
                     <button type="submit" className="btn btn-primary w-100" disabled={loading}>
                         {loading ? 'Logging in...' : 'Login'}
                     </button>
+                    <p className="text-center mt-3">
+                        First time user? <Link href="/register">Create Account</Link>
+                    </p>
+
+
                 </form>
             </div>
         </div>

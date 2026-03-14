@@ -7,7 +7,13 @@ export async function middleware(request: NextRequest) {
     const token = request.cookies.get('token')?.value;
 
     // Paths that don't require authentication
-    const publicPaths = ['/login', '/api/auth/login', '/favicon.ico', '/public', '/_next'];
+    const publicPaths = ['/login',
+        '/register',
+        '/api/auth/login',
+        '/api/auth/register',
+        '/favicon.ico',
+        '/public',
+        '/_next'];
 
     const isPublicPath = publicPaths.some((path) =>
         request.nextUrl.pathname.startsWith(path)
@@ -21,11 +27,11 @@ export async function middleware(request: NextRequest) {
                     process.env.JWT_SECRET || 'your-secret-key-change-this'
                 );
                 const { payload } = await jwtVerify(token, secret);
-                
+
                 if (payload.role === 'User') {
                     return NextResponse.redirect(new URL('/user-dashboard', request.url));
                 }
-                
+
                 return NextResponse.redirect(new URL('/', request.url));
             } catch (error) {
                 // Token invalid, allow access to login page
@@ -44,7 +50,7 @@ export async function middleware(request: NextRequest) {
             process.env.JWT_SECRET || 'your-secret-key-change-this'
         );
         const { payload } = await jwtVerify(token, secret);
-        
+
         // --- Role-based Route Protection ---
         const role = payload.role as string;
         const pathname = request.nextUrl.pathname;
@@ -52,7 +58,7 @@ export async function middleware(request: NextRequest) {
         // If 'User' role, restrict them
         if (role === 'User') {
             const allowedUserRoutes = ['/user-dashboard', '/my-bookings', '/api', '/_next'];
-            
+
             // Allow access to home / basic landing page if it exists, otherwise redirect to dashboard
             if (pathname === '/') {
                 return NextResponse.redirect(new URL('/user-dashboard', request.url));
@@ -66,7 +72,7 @@ export async function middleware(request: NextRequest) {
                 return NextResponse.redirect(new URL('/user-dashboard', request.url));
             }
         }
-        
+
         return NextResponse.next();
     } catch (error) {
         // Token invalid or expired
